@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Wikipedia Articles RSS Feed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .article {
+            margin-bottom: 20px;
+        }
+        .title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .link {
+            color: blue;
+            text-decoration: none;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .description {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Wikipedia Articles RSS Feed</h1>
+    <div id="rss-feed"></div>
+    
+    <script>
+        async function fetchRSS() {
+            const rssUrl = 'https://github.com/PRATHMESH-FEEDSPOT/rss_feed.xml'; 
+            const response = await fetch(rssUrl);
+            const text = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, "application/xml");
+            
+            const items = xmlDoc.getElementsByTagName('item');
+            const rssFeed = document.getElementById('rss-feed');
+            
+            for (let i = 0; i < items.length; i++) {
+                const title = items[i].getElementsByTagName('title')[0].textContent;
+                const link = items[i].getElementsByTagName('link')[0].textContent;
+                const description = items[i].getElementsByTagName('description')[0].textContent;
+                const pubDate = items[i].getElementsByTagName('pubDate')[0].textContent;
+
+                const articleDiv = document.createElement('div');
+                articleDiv.classList.add('article');
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.classList.add('title');
+                titleDiv.textContent = title;
+
+                const linkA = document.createElement('a');
+                linkA.classList.add('link');
+                linkA.href = link;
+                linkA.textContent = link;
+
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.classList.add('description');
+                descriptionDiv.textContent = description;
+
+                const pubDateDiv = document.createElement('div');
+                pubDateDiv.classList.add('pubDate');
+                pubDateDiv.textContent = pubDate;
+
+                articleDiv.appendChild(titleDiv);
+                articleDiv.appendChild(linkA);
+                articleDiv.appendChild(descriptionDiv);
+                articleDiv.appendChild(pubDateDiv);
+
+                rssFeed.appendChild(articleDiv);
+            }
+        }
+
+        fetchRSS();
+    </script>
+</body>
+</html>
