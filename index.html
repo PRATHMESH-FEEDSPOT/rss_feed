@@ -33,7 +33,7 @@
     
     <script>
         async function fetchRSS() {
-            const rssUrl = 'https://github.com/PRATHMESH-FEEDSPOT/rss_feed.xml'; 
+            const rssUrl = 'https://prathmesh-feedspot.github.io/rss_feed/rss_feed.xml'; 
             const response = await fetch(rssUrl);
             const text = await response.text();
             const parser = new DOMParser();
